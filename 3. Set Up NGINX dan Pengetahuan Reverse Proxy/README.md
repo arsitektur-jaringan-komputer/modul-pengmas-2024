@@ -123,7 +123,7 @@ server {
 
 **Catatan**:
 
-- `liste`: Menentukan port yang digunakan oleh Nginx.
+- `listen`: Menentukan port yang digunakan oleh Nginx.
 
 - `server_name`: Menentukan nama domain yang digunakan oleh aplikasi laravel. Dapat diganti dengan IP Public server, nama domain, atau localhost.
 
@@ -135,7 +135,7 @@ server {
 
 - `location ~ \.php$`: Menentukan bagian konfigurasi untuk request yang masuk ke file PHP. Semua request yang masuk ke file PHP akan diteruskan ke PHP-FPM.
 
-- `locatoin ~ /\.ht`: Menentukan bagian konfigurasi untuk request yang masuk ke file `.ht`. Semua request yang masuk ke file `.ht` akan ditolak.
+- `location ~ /\.ht`: Menentukan bagian konfigurasi untuk request yang masuk ke file `.ht`. Semua request yang masuk ke file `.ht` akan ditolak.
 
 Setelah itu, konfigurasi dapat ditambahkan pada direktori `/etc/nginx/sites-enabled/` dengan perintah berikut.
 
