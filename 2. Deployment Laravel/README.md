@@ -5,9 +5,21 @@
   - [1.2. Virtual Server vs Physical Server](#virtual-server-vs-physical-server)
   - [1.3 Konsep Elastic Computing](#konsep-elastic-computing)
 - [2. Amazon Elastic Compute Cloud](#amazon-elastic-compute-cloud)
-  - [2.1 Setup Akun AWS](#setup-akun-aws)
-  - [2.2 Pengenalan EC2](#pengenalan-elastic-compute-cloud)
-  - [2.3 Membuat Instance EC2](#membuat-instance-ec2)
+  - [2.1. Pengenalan EC2](#pengenalan-ec2)
+  - [2.2. Membuat Penyediaan Shell](#membuat-penyediaan-shell)\
+  - [2.3. Upload Projek Laravel](#upload-projek-laravel)
+  - [2.4. Menjalankan Projek](#menjalankan-projek)
+  - [2.5. Buat Database Baru](#buat-database-baru)
+  - [2.6. Tambahkan Application Environment](#tambahkan-application-environment)
+    - [2.6.1. Tambahkan debug](#tambahkan-debug)
+    - [2.6.2. Edit .env file](#edit-env-file)
+  - [2.7. Composer](#composer)
+    - [2.7.1. Composer Install](#composer-install)
+    - [2.7.2. Composer Update(optional)](#composer-updateoptional)
+    - [2.7.3. Upgrade Composer](#upgrade-composer)
+  - [2.8. Artisan](#artisan)
+  - [2.9. Error yang Mungkin Terjadi](#error-yang-mungkin-terjadi)
+    - [2.9.1. Halaman yang Muncul Adalah Nginx Default Page](#halaman-yang-muncul-adalah-nginx-default-page)
 
 ### Pendahuluan
 
@@ -47,3 +59,160 @@ Elastic Compute Cloud (EC2) adalah server virtual yang bisa kita "rental" di AWS
 
 Setelah melakukan setup, instance bisa dijalankan dan kita akan memiliki akses administratif secara penuh, seperti jika kita membeli server pribadi. 
 
+### Membuat Penyediaan Shell
+
+Di root directory projek, buat file .sh baru bernama 'command.sh'.
+
+```shell
+#!/bin/bash
+
+#Update
+sudo apt-get update -y
+
+#Install dependencies and add PHP8.0 repository
+sudo apt-get install  ca-certificates apt-transport-https software-properties-common -y
+sudo add-apt-repository ppa:ondrej/php -y
+
+# install nginx
+sudo apt-get install nginx -y
+
+# Set firewall permission
+echo "y" | sudo ufw enable
+sudo ufw allow ssh
+sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 443
+sudo ufw allow 80
+sudo ufw allow 22
+
+# You should install PHP8.0 version to run the Laravel Project
+sudo apt-get update -y
+sudo apt-get install php8.0-common php8.0-cli -y
+
+# install PHP package
+sudo apt-get install php8.0-mbstring php8.0-xml unzip composer -y
+sudo apt-get install php8.0-curl php8.0-mysql php8.0-fpm -y
+
+# install MYSQL
+sudo apt-get install mysql-server -y
+
+# Set MYSQL password
+sudo apt-get install debconf-utils -y
+debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
+
+# Nginx config
+sudo cp /var/www/config/example.conf /etc/nginx/sites-available/example.conf
+
+# Copy to sites-enabled directory
+sudo ln -s /etc/nginx/sites-available/example.conf /etc/nginx/sites-enabled
+sudo service nginx restart
+
+```
+
+### Upload Projek Laravel 
+
+Buat folder baru di direktori root project bernama "project". Kamu bisa menggunakan projek Laravel dari repositori berikut:
+
+```shell
+git clone https://gitlab.com/kuuhaku86/web-penugasan-individu.git
+```
+
+### Menjalankan Projek
+
+```shell
+vagrant up
+```
+
+Akses VM menggunakan vagrant SSH.
+
+```shell
+vagrant ssh
+```
+
+### Buat Database Baru
+
+Akses MySQL
+
+```shell
+sudo mysql -u root -p <- default null password
+
+CREATE DATABASE DATABASE_NAME;
+CREATE USER 'USER'@'%' IDENTIFIED BY 'PASSWORD';
+GRANT ALL PRIVILEGES ON DATABASE_NAME.* TO 'USER'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+```
+
+### Tambahkan Application Environment
+
+```
+sudo cp .env.example .env
+sudo nano /var/www/project/.env
+```
+
+#### Tambahkan debug
+
+```
+APP_DEBUG=true
+LOG_DEBUG=true
+```
+
+#### Edit .env file
+
+Lakukan konfigurasi di DB_DATABASE, DB_USERNAME, DB_PASSWORD, dan lainnya.
+
+```shell
+APP_NAME=Laravel
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost
+
+LOG_CHANNEL=stack
+LOG_LEVEL=debug
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+```
+### Composer
+
+#### Composer Install
+
+```
+sudo composer install
+```
+
+####  Composer Update(optional)
+
+```
+sudo composer update
+```
+
+#### Upgrade Composer 
+
+```
+sudo which composer
+sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+sudo php composer-setup.php --install-dir=/usr/bin --filename=composer
+```
+
+### Artisan
+
+```
+sudo php artisan key:generate
+sudo php artisan migrate
+```
+
+### Error yang Mungkin Terjadi
+
+#### Halaman yang Muncul Adalah Nginx Default Page
+
+Solusinya adalah menghapus default
+
+```
+sudo rm -rf /etc/nginx/sites-enabled/default
+sudo service nginx reload
+```
