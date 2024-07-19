@@ -72,13 +72,14 @@ Lalu apabila diminta password, maka masukkan password sesuai yang tertera di she
 
 ### Upload Projek Laravel 
 
-Pindah ke folder /var/www
+Pindah ke folder /var/www/app
 
 ```sh
-cd /var/www
+sudo mkdir /var/www/app
+cd /var/www/app
 ```
 
-Di folder /var/www lakukan cloning projek Laravel dari repositori berikut:
+Di folder /var/www/app lakukan cloning projek Laravel dari repositori berikut:
 
 ```shell
 git clone https://gitlab.com/kuuhaku86/web-penugasan-individu.git
@@ -118,9 +119,9 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 ```
 
 ### Ubah permission storage
-Kita perlu mengubah permission pada ``/var/www/web-penugasan-individu/storage``, karena aplikasi laravel berjalan dengan user www-data. Aplikasi akan menuliskan log kejadian pada folder tersebut. Dan untuk melakukannya, kita perlu mengubah kepemilikannya ke www-data. Jalankan perintah berikut:
+Kita perlu mengubah permission pada ``/var/www/app/web-penugasan-individu/storage``, karena aplikasi laravel berjalan dengan user www-data. Aplikasi akan menuliskan log kejadian pada folder tersebut. Dan untuk melakukannya, kita perlu mengubah kepemilikannya ke www-data. Jalankan perintah berikut:
 ```
-sudo chown -R www-data:www-data /var/www/web-penugasan-individu/storage
+sudo chown -R www-data:www-data /var/www/app/web-penugasan-individu/storage
 ```
 
 ### Buat Database Baru
@@ -144,7 +145,7 @@ FLUSH PRIVILEGES;
 
 ```
 sudo cp .env.example .env
-sudo nano /var/www/web-penugasan-individu/.env
+sudo nano /var/www/app/web-penugasan-individu/.env
 ```
 
 #### Tambahkan debug
