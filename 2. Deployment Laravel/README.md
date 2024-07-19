@@ -117,6 +117,12 @@ debconf-set-selections <<< 'mysql-server mysql-server/root_password_again passwo
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
 ```
 
+### Ubah permission storage
+Kita perlu mengubah permission pada ``/var/www/web-penugasan-individu/storage``, karena aplikasi laravel berjalan dengan user www-data. Aplikasi akan menuliskan log kejadian pada folder tersebut. Dan untuk melakukannya, kita perlu mengubah kepemilikannya ke www-data. Jalankan perintah berikut:
+```
+sudo chown -R www-data:www-data /var/www/web-penugasan-individu/storage
+```
+
 ### Buat Database Baru
 
 Akses MySQL
@@ -168,11 +174,6 @@ DB_PORT=3306
 DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=
-```
-
-### Ubah permission storage
-```
-sudo chown -R www-data:www-data /var/www/web-penugasan-individu/storage 
 ```
 
 ### Composer
