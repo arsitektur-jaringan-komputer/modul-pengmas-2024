@@ -59,10 +59,34 @@ Elastic Compute Cloud (EC2) adalah server virtual yang bisa kita "rental" di AWS
 
 Setelah melakukan setup, instance bisa dijalankan dan kita akan memiliki akses administratif secara penuh, seperti jika kita membeli server pribadi. 
 
-### Membuat Penyediaan Shell
 
-Di root directory projek, buat file .sh baru bernama 'command.sh'.
+### Masuk ke Dalam Server
 
+Untuk melakukan deployment, kita akan menggunakna server EC2 dari AWS. Buka powershell lalu masukkan perintah berikut:
+
+```sh
+ssh [akun_kalian]@[ip_server] 
+```
+
+Lalu apabila diminta password, maka masukkan password sesuai yang tertera di sheet sesuai pada baris mana kalian.
+
+### Upload Projek Laravel 
+
+Pindah ke folder /var/www
+
+```sh
+cd /var/www
+```
+
+Di folder /var/www lakukan cloning projek Laravel dari repositori berikut:
+
+```shell
+git clone https://gitlab.com/kuuhaku86/web-penugasan-individu.git
+```
+
+### Instalasi dependensi
+
+Supaya kita bisa mendeploy aplikasi berbasis laravel, lakukan instalasi dependensi sebagi berikut:
 ```shell
 #!/bin/bash
 
@@ -75,14 +99,6 @@ sudo add-apt-repository ppa:ondrej/php -y
 
 # install nginx
 sudo apt-get install nginx -y
-
-# Set firewall permission
-echo "y" | sudo ufw enable
-sudo ufw allow ssh
-sudo ufw allow 'Nginx HTTP'
-sudo ufw allow 443
-sudo ufw allow 80
-sudo ufw allow 22
 
 # You should install PHP8.0 version to run the Laravel Project
 sudo apt-get update -y
@@ -99,34 +115,6 @@ sudo apt-get install mysql-server -y
 sudo apt-get install debconf-utils -y
 debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
-
-# Nginx config
-sudo cp /var/www/config/example.conf /etc/nginx/sites-available/example.conf
-
-# Copy to sites-enabled directory
-sudo ln -s /etc/nginx/sites-available/example.conf /etc/nginx/sites-enabled
-sudo service nginx restart
-
-```
-
-### Upload Projek Laravel 
-
-Buat folder baru di direktori root project bernama "project". Kamu bisa menggunakan projek Laravel dari repositori berikut:
-
-```shell
-git clone https://gitlab.com/kuuhaku86/web-penugasan-individu.git
-```
-
-### Menjalankan Projek
-
-```shell
-vagrant up
-```
-
-Akses VM menggunakan vagrant SSH.
-
-```shell
-vagrant ssh
 ```
 
 ### Buat Database Baru
@@ -204,15 +192,4 @@ sudo php composer-setup.php --install-dir=/usr/bin --filename=composer
 ```
 sudo php artisan key:generate
 sudo php artisan migrate
-```
-
-### Error yang Mungkin Terjadi
-
-#### Halaman yang Muncul Adalah Nginx Default Page
-
-Solusinya adalah menghapus default
-
-```
-sudo rm -rf /etc/nginx/sites-enabled/default
-sudo service nginx reload
 ```
