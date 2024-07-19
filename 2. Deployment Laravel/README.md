@@ -121,9 +121,13 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 
 Akses MySQL
 
-```shell
-sudo mysql -u root -p <- default null password
+```sh
+sudo mysql -u root -p
+```
 
+Jalankan perintah berikut:
+
+```shell
 CREATE DATABASE DATABASE_NAME;
 CREATE USER 'USER'@'%' IDENTIFIED BY 'PASSWORD';
 GRANT ALL PRIVILEGES ON DATABASE_NAME.* TO 'USER'@'%' WITH GRANT OPTION;
@@ -135,11 +139,6 @@ FLUSH PRIVILEGES;
 ```
 sudo cp .env.example .env
 sudo nano /var/www/web-penugasan-individu/.env
-```
-
-### Ubah permission storage
-```
-sudo chown -R www-data:www-data /var/www/web-penugasan-individu/storage 
 ```
 
 #### Tambahkan debug
@@ -170,6 +169,12 @@ DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=
 ```
+
+### Ubah permission storage
+```
+sudo chown -R www-data:www-data /var/www/web-penugasan-individu/storage 
+```
+
 ### Composer
 
 #### Composer Install
