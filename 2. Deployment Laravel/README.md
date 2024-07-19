@@ -134,7 +134,12 @@ FLUSH PRIVILEGES;
 
 ```
 sudo cp .env.example .env
-sudo nano /var/www/project/.env
+sudo nano /var/www/web-penugasan-individu/.env
+```
+
+### Ubah permission storage
+```
+sudo chown -R www-data:www-data /var/www/web-penugasan-individu/storage 
 ```
 
 #### Tambahkan debug
