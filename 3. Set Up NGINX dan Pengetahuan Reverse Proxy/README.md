@@ -63,22 +63,6 @@ Selain itu, pastikan server sudah dapat diakses melalui browser dengan menggunak
 
 ### Persiapan Aplikasi
 
-Untuk keperluan implementasi Reverse Proxy Nginx, akan digunakan aplikasi laravel dari repository [di sini](https://gitlab.com/kuuhaku86/web-penugasan-individu). Oleh karena itu, aplikasi laravel tersebut perlu kita lakukan clone terlebih dahulu.
-
-```bash
-git clone https://gitlab.com/kuuhaku86/web-penugasan-individu /var/www/app
-```
-
-Lakukan clone aplikasi laravel tersebut di dalam direktori `/var/www/`. Untuk nama direktori aplikasi laravel, bisa disesuaikan dengan keinginan. Pastikan aplikasi sudah berada pada direktori `/var/www/app` dengan perintah berikut.
-
-```bash
-ls /var/www/app
-```
-
-![nginx-2](assets/nginx-2.png)
-
-### Konfigurasi Aplikasi Laravel
-
 Pastikan aplikasi laravel sudah dapat berjalan dengan baik mengikuti langkah-langkah pada modul sebelumnya. Dapat menggunakan perintah berikut untuk menjalankan aplikasi laravel.
 
 ```bash
@@ -101,7 +85,7 @@ Kemudian, isi file konfigurasi tersebut dengan konfigurasi berikut.
 ```nginx
 server {
   listen 80;
-  server_name app.local;
+  server_name _;
 
   root /var/www/app/public;
   index index.php;
