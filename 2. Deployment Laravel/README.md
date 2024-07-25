@@ -68,10 +68,10 @@ Setelah melakukan setup, instance bisa dijalankan dan kita akan memiliki akses a
 Untuk melakukan deployment, kita akan menggunakna server EC2 dari AWS. Buka powershell lalu masukkan perintah berikut:
 
 ```sh
-ssh [akun_kalian]@[ip_server] 
+ssh ubuntu@[ip_server] 
 ```
 
-Lalu apabila diminta password, maka masukkan password sesuai yang tertera di sheet sesuai pada baris mana kalian.
+Lalu apabila diminta password, maka masukkan password yang tertulis di sheet
 
 ![ssh](assets/ssh.png)
 
@@ -87,7 +87,7 @@ cd /var/www/app
 Di folder /var/www/app lakukan cloning projek Laravel dari repositori berikut:
 
 ```shell
-git clone https://gitlab.com/kuuhaku86/web-penugasan-individu.git
+git clone https://gitlab.com/kuuhaku86/web-penugasan-individu.git .
 ```
 
 ![upload-projek-laravel](assets/upload-projek-laravel.png)
