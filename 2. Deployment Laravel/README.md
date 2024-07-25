@@ -112,6 +112,7 @@ sudo apt-get install nginx -y
 # You should install PHP8.0 version to run the Laravel Project
 sudo apt-get update -y
 sudo apt-get install php8.0-common php8.0-cli -y
+sudo apt-get install php8.0-intl
 
 # install PHP package
 sudo apt-get install php8.0-mbstring php8.0-xml unzip composer -y
@@ -119,11 +120,6 @@ sudo apt-get install php8.0-curl php8.0-mysql php8.0-fpm -y
 
 # install MYSQL
 sudo apt-get install mysql-server -y
-
-# Set MYSQL password
-sudo apt-get install debconf-utils -y
-sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
-sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password root"
 ```
 
 ### Ubah permission storage
@@ -131,7 +127,7 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 Kita perlu mengubah permission pada ``/var/www/app/web-penugasan-individu/storage``, karena aplikasi laravel berjalan dengan user www-data. Aplikasi akan menuliskan log kejadian pada folder tersebut. Dan untuk melakukannya, kita perlu mengubah kepemilikannya ke www-data. Jalankan perintah berikut:
 
 ```
-sudo chown -R www-data:www-data /var/www/app/web-penugasan-individu/storage
+sudo chown -R www-data:www-data /var/www/app/storage
 ```
 
 ### Buat Database Baru
@@ -146,7 +142,7 @@ Jalankan perintah berikut:
 
 ```shell
 CREATE DATABASE databaseku;
-CREATE USER 'user1'@'%' IDENTIFIED BY 'P4ssW0rdDat4b4seKu';
+CREATE USER 'user1'@'%' IDENTIFIED BY 'naspad';
 GRANT ALL PRIVILEGES ON databaseku.* TO 'user1'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
@@ -157,7 +153,7 @@ FLUSH PRIVILEGES;
 
 ```
 sudo cp .env.example .env
-sudo nano /var/www/app/web-penugasan-individu/.env
+sudo nano /var/www/app/.env
 ```
 
 #### Tambahkan debug
@@ -186,7 +182,7 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=databaseku
 DB_USERNAME=user1
-DB_PASSWORD=P4ssW0rdDat4b4seKu
+DB_PASSWORD=naspad
 ```
 
 ### Composer
@@ -201,14 +197,6 @@ sudo composer install
 
 ```
 sudo composer update
-```
-
-#### Upgrade Composer 
-
-```
-sudo which composer
-sudo php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-sudo php composer-setup.php --install-dir=/usr/bin --filename=composer
 ```
 
 ### Artisan
